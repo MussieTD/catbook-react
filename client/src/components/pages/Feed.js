@@ -42,8 +42,8 @@ class Feed extends Component {
           _id={storyObj._id}
           creator_name={storyObj.creator_name}
           creator_id={storyObj.creator_id}
-          userId={this.props.userId}
           content={storyObj.content}
+          userId={this.props.userId}
         />
       ));
     } else {

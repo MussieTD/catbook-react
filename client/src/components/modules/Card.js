@@ -50,9 +50,8 @@ class Card extends Component {
         <CommentsBlock
           story={this.props}
           comments={this.state.comments}
-          creator_id={this.props.creator_id}
-          userId={this.props.userId}
           addNewComment={this.addNewComment}
+          userId={this.props.userId}
         />
       </div>
     );

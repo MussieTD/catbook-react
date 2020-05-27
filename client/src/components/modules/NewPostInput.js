@@ -104,4 +104,15 @@ class NewStory extends Component {
   }
 }
 
-export { NewComment, NewStory };
+class NewChat extends Component {
+  sendMessage = (value) => {
+    const body = { recipient: this.props.recipient, content: value };
+    post("/api/chat", body);
+  };
+
+  render() {
+    return <NewPostInput defaultText="New Message" onSubmit={this.sendMessage} />;
+  }
+}
+
+export { NewComment, NewStory, NewChat };

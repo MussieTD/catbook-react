@@ -9,6 +9,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: undefined,
       catHappiness: 0,
     };
   }
@@ -44,7 +45,7 @@ class Profile extends Component {
           <div className="Profile-subContainer u-textCenter">
             <h4 className="Profile-subTitle">About Me</h4>
             <div id="profile-description">
-              I am really allergic to cats i don't know why i have a catbook
+              Extra Challenge: Modify catbook to show a personalized description here!
             </div>
           </div>
           <div className="Profile-subContainer u-textCenter">

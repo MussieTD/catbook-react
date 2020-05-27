@@ -4,7 +4,11 @@ import { Router } from "@reach/router";
 import Feed from "./pages/Feed.js";
 import NotFound from "./pages/NotFound.js";
 import Profile from "./pages/Profile.js";
-import { get, post } from "../utilities.js";
+import Chatbook from "./pages/Chatbook.js";
+
+import { socket } from "../client-socket.js";
+
+import { get, post } from "../utilities";
 
 // to use styles, import the necessary CSS files
 import "../utilities.css";
@@ -17,9 +21,8 @@ class App extends Component {
   // makes props available in this component
   constructor(props) {
     super(props);
-
     this.state = {
-      userId: null,
+      userId: undefined,
     };
   }
 
@@ -33,17 +36,16 @@ class App extends Component {
   }
 
   handleLogin = (res) => {
+    console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
-      // the server knows we're logged in now
       this.setState({ userId: user._id });
-      console.log(user);
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   handleLogout = () => {
-    console.log("Logged out successfully!");
-    this.setState({ userId: null });
+    this.setState({ userId: undefined });
     post("/api/logout");
   };
 
@@ -63,6 +65,7 @@ class App extends Component {
           <Router>
             <Feed path="/" userId={this.state.userId} />
             <Profile path="/profile/:userId" />
+            <Chatbook path="/chat/" userId={this.state.userId} />
             <NotFound default />
           </Router>
         </div>
