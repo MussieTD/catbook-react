@@ -34,9 +34,7 @@ const socket = require("./server-socket");
 
 // Server configuration below
 // TODO change connection URL after setting up your own database
-const mongoConnectionURL =
-  "mongodb+srv://weblab:jAT4po55IAgYWQgR@catbook-ylndp.mongodb.net/test?retryWrites=true&w=majority";
-// TODO change database name to the name you chose
+const mongoConnectionURL = process.env.ATLAS_SRV; // TODO change database name to the name you chose
 const databaseName = "catbook";
 
 // connect to mongodb
@@ -60,7 +58,7 @@ app.use(bodyParser.json());
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
