@@ -34,7 +34,7 @@ const socket = require("./server-socket");
 
 // Server configuration below
 // TODO change connection URL after setting up your own database
-const mongoConnectionURL = process.env.ATLAS_SRV; // TODO change database name to the name you chose
+const mongoConnectionURL = process.env.ATLAS_SRV || "mongodb+srv://Mussie:mongopw@cluster0-e42fz.mongodb.net/test?retryWrites=true&w=majority"; //; // TODO change database name to the name you chose
 const databaseName = "catbook";
 
 // connect to mongodb
@@ -58,7 +58,7 @@ app.use(bodyParser.json());
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    secret: "session-secret", //process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "session-secret",
     resave: false,
     saveUninitialized: true,
   })
@@ -96,7 +96,7 @@ app.use((err, req, res, next) => {
 });
 
 // hardcode port to 3000 for now
-const port = process.env.PORT || 3000;
+const port = 3000; //process.env.PORT || 3000;
 const server = http.Server(app);
 socket.init(server);
 
