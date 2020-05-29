@@ -15,6 +15,8 @@ const Comment = require("./models/comment");
 const User = require("./models/user");
 const Message = require("./models/message");
 
+const Statement = require("./models/statement.js");
+
 // import authentication library
 const auth = require("./auth");
 
@@ -71,6 +73,27 @@ router.get("/user", (req, res) => {
   User.findById(req.query.userid).then((user) => {
     res.send(user);
   });
+});
+
+router.get("/statement", (req, res) => {
+  console.log("getting statements on: " + req.query.topic_type);
+  Statement.find({ topic_type : req.query.topic_type }).then((statements) => {
+    res.send(statements);
+  });
+});
+
+router.post("/statement", auth.ensureLoggedIn, (req, res) => {
+  console.log("posting statement: "  + req.body.topic_type);
+  const newStatement = new Statement({
+    creator_id: req.user._id,
+    creator_name: req.user.name,
+    content: req.body.content,
+    topic_type: req.body.topic_type,
+    content_type: req.body.content_type,
+
+  });
+
+  newStatement.save().then((statement) => res.send(statement));
 });
 
 router.get("/messages", (req, res) => {

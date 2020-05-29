@@ -6,6 +6,9 @@ import NotFound from "./pages/NotFound.js";
 import Profile from "./pages/Profile.js";
 import Chatbook from "./pages/Chatbook.js";
 
+import TopicSelection from "./pages/TopicSelection.js"
+import SpecFeed from "./pages/SpecFeed.js"
+
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
@@ -52,6 +55,8 @@ class App extends Component {
   // required method: whatever is returned defines what
   // shows up on screen
   render() {
+
+    // <Feed path="/" userId={this.state.userId} /> <TopicSelection path="/" />
     return (
       // <> is like a <div>, but won't show
       // up in the DOM tree
@@ -63,10 +68,13 @@ class App extends Component {
         />
         <div className="App-container">
           <Router>
-            <Feed path="/" userId={this.state.userId} />
+          <TopicSelection path="/" />
+
             <Profile path="/profile/:userId" />
             <Chatbook path="/chat/" userId={this.state.userId} />
             <NotFound default />
+
+            <SpecFeed path="/specfeed/:topic_type"/>
           </Router>
         </div>
       </>

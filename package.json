@@ -39,12 +39,12 @@
     "url-loader": "^1.1.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.0",
-    "@babel/core": "^7.10.0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.10.0",
-    "@babel/preset-react": "^7.10.0",
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/polyfill": "^7.10.1",
+    "@babel/preset-env": "^7.10.1",
+    "@babel/preset-react": "^7.10.1",
     "@babel/preset-stage-0": "^7.8.3",
     "babel-loader": "^8.1.0",
     "css-loader": "^2.1.1",
