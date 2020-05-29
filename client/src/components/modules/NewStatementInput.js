@@ -18,7 +18,6 @@ class NewStatementInput extends Component {
     this.state = {
       value: "",
       contentType: "Problem",
-      topicType: "Health",
     };
   }
 
@@ -34,17 +33,16 @@ class NewStatementInput extends Component {
   // called when the user hits "Submit" for a new post
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit && this.props.onSubmit(this.state.value, this.state.contentType, this.state.topicType);
+    this.props.onSubmit && this.props.onSubmit(this.state.value, this.state.contentType, this.props.topicType);
     console.log("mid sibmission");
     this.setState({
       value: "",
       contentType: "Problem",
-      topicType: "Health",
     });
   };
 
-handleOptionChange = (event) => {
-  console.log("event: ", event)
+handleRadioChange = (event) => {
+  console.log("event: ", event.target.value)
   this.setState({selectedOption: event.target.value});
 };
   render() {
@@ -52,12 +50,37 @@ handleOptionChange = (event) => {
       <div className="u-flex">
         <input
           type="text"
-          placeholder="heya"//{this.props.defaultText}
+          placeholder= {this.props.defaultText}
           value={this.state.value}
           onChange={this.handleChange}
           className="NewPostInput-input"
         />
-
+        <form>
+            <div className="radio">
+              <label>
+                <input type="radio" value="problem"
+                              checked={this.state.selectedOption === 'problem'}
+                              onChange={this.handleRadioChange} />
+                Problem
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input type="radio" value="solution"
+                              checked={this.state.selectedOption === 'solution'}
+                              onChange={this.handleRadioChange} />
+                Solution
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input type="radio" value="improvement"
+                              checked={this.state.selectedOption === 'improvement'}
+                              onChange={this.handleRadioChange} />
+                Improvement
+              </label>
+            </div>
+          </form>
         <button
           type="submit"
           className="NewPostInput-button u-pointer"
@@ -131,8 +154,8 @@ handleOptionChange = (event) => {
  * @param {string} defaultText is the placeholder text
  */
 class NewStatement extends Component {
-  addStatement = (value, contentType, topicType) => {
-    const body = { content: value , content_type : contentType, topic_type: topicType};
+  addStatement = (value, contentType) => {
+    const body = { content: value , content_type : contentType, topic_type: this.props.topic_type};
     console.log("passing as body: " + body.topic_type);
     post("/api/statement", body)
     .then((story) => {
@@ -147,7 +170,7 @@ class NewStatement extends Component {
    };
 
   render() {
-    return <NewStatementInput defaultText="New Story" onSubmit={this.addStatement} />;
+    return <NewStatementInput defaultText="New Story" onSubmit={this.addStatement} topic_type={this.props.topic_type} />;
   }
 }
 
