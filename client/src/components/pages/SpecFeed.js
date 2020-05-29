@@ -7,6 +7,7 @@ import { get } from "../../utilities";
 import { Link } from "@reach/router";
 
 import { NewStatement } from "../modules/NewStatementInput.js"
+import StatementCard from "../modules/StatementCard.js";
 
 class SpecFeed extends Component {
   constructor(props) {
@@ -42,13 +43,15 @@ class SpecFeed extends Component {
     const hasStories = this.state.statements.length !== 0;
     if (hasStories) {
       storiesList = this.state.statements.map((storyObj) => (
-        <Card
+        <StatementCard
           key={`Card_${storyObj._id}`}
           _id={storyObj._id}
           creator_name={storyObj.creator_name}
           creator_id={storyObj.creator_id}
           content={storyObj.content}
           userId={this.props.userId}
+          content_type={storyObj.content_type}
+          topic_type={storyObj.topic_type}
         />
       ));
     } else {
