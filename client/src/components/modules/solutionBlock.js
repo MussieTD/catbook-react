@@ -11,7 +11,6 @@ import { NewComment } from "./NewPostInput.js";
 
 /**
  * Component that holds all the comments for a story
- *
  * Proptypes
  * @param {ContentObject[]} comments
  * @param {ContentObject} story
