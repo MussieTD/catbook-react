@@ -43,8 +43,9 @@ class NewStatementInput extends Component {
 
 handleRadioChange = (event) => {
   console.log("event: ", event.target.value)
-  this.setState({selectedOption: event.target.value});
+  this.setState({contentType: event.target.value});
 };
+
   render() {
     return (
       <div className="u-flex">
@@ -59,7 +60,7 @@ handleRadioChange = (event) => {
             <div className="radio">
               <label>
                 <input type="radio" value="problem"
-                              checked={this.state.selectedOption === 'problem'}
+                              checked={this.state.contentType === 'problem'}
                               onChange={this.handleRadioChange} />
                 Problem
               </label>
@@ -67,7 +68,7 @@ handleRadioChange = (event) => {
             <div className="radio">
               <label>
                 <input type="radio" value="solution"
-                              checked={this.state.selectedOption === 'solution'}
+                              checked={this.state.contentType === 'solution'}
                               onChange={this.handleRadioChange} />
                 Solution
               </label>
@@ -75,7 +76,7 @@ handleRadioChange = (event) => {
             <div className="radio">
               <label>
                 <input type="radio" value="improvement"
-                              checked={this.state.selectedOption === 'improvement'}
+                              checked={this.state.contentType === 'improvement'}
                               onChange={this.handleRadioChange} />
                 Improvement
               </label>
@@ -93,59 +94,6 @@ handleRadioChange = (event) => {
     );
   }
 }
-/**
-// <form>
-//     <div className="radio">
-//       <label>
-//         <input type="radio" value="option1"
-//                       checked={this.state.selectedOption === 'option1'}
-//                       onChange={this.handleOptionChange} />
-//         Problem
-//       </label>
-//     </div>
-//     <div className="radio">
-//       <label>
-//         <input type="radio" value="option2"
-//                       checked={this.state.selectedOption === 'option2'}
-//                       onChange={this.handleOptionChange} />
-//         Solution
-//       </label>
-//     </div>
-//     <div className="radio">
-//       <label>
-//         <input type="radio" value="option3"
-//                       checked={this.state.selectedOption === 'option3'}
-//                       onChange={this.handleOptionChange} />
-//         Improvement
-//       </label>
-//     </div>
-//   </form>
-*/
-
-/**
- * New Comment is a New Post component for comments
- *
- * Proptypes
- * @param {string} defaultText is the placeholder text
- * @param {string} storyId to add comment to
- */
-// class NewComment extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//
-//   addComment = (value) => {
-//     const body = { parent: this.props.storyId, content: value };
-//     post("/api/comment", body).then((comment) => {
-//       // display this comment on the screen
-//       this.props.addNewComment(comment);
-//     });
-//   };
-//
-//   render() {
-//     return <NewPostInput defaultText="New Comment" onSubmit={this.addComment} />;
-//   }
-// }
 
 /**
  * New Story is a New Post component for comments
@@ -173,16 +121,5 @@ class NewStatement extends Component {
     return <NewStatementInput defaultText="New Story" onSubmit={this.addStatement} topic_type={this.props.topic_type} />;
   }
 }
-
-// class NewChat extends Component {
-//   sendMessage = (value) => {
-//     const body = { recipient: this.props.recipient, content: value };
-//     post("/api/chat", body);
-//   };
-//
-//   render() {
-//     return <NewPostInput defaultText="New Message" onSubmit={this.sendMessage} />;
-//   }
-// }
 
 export { NewStatement };

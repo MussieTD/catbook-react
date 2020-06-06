@@ -28,9 +28,9 @@ class NavBar extends Component {
               Profile
             </Link>
           )}
-          <Link to="/chat/" className="NavBar-link">
+           { false && <Link to="/chat/" className="NavBar-link">
             Chat
-          </Link>
+          </Link>}
           {this.props.userId ? (
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}

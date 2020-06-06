@@ -74,7 +74,7 @@ class App extends Component {
             <Chatbook path="/chat/" userId={this.state.userId} />
             <NotFound default />
 
-            <SpecFeed path="/specfeed/:topic_type"/>
+            <SpecFeed path="/specfeed/:topic_type" userId={this.state.userId}/>
           </Router>
         </div>
       </>

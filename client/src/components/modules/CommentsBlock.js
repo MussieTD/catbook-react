@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SingleComment from "./SingleComment.js";
-import { NewComment } from "./NewPostInput.js";
+import { NewComment } from "./NewFeedBackInput.js";
 
 /**
  * @typedef ContentObject
@@ -25,6 +25,9 @@ class CommentsBlock extends Component {
     return (
       <div className="Card-commentSection">
         <div className="story-comments">
+        {this.props.userId && (
+          <NewComment storyId={this.props.statement._id} addNewComment={this.props.addNewComment} />
+        )}
           {this.props.comments.map((comment) => (
             <SingleComment
               key={`SingleComment_${comment._id}`}
@@ -32,11 +35,10 @@ class CommentsBlock extends Component {
               creator_name={comment.creator_name}
               creator_id={comment.creator_id}
               content={comment.content}
+              userId = {this.props.userId}
             />
           ))}
-          {this.props.userId && (
-            <NewComment storyId={this.props.story._id} addNewComment={this.props.addNewComment} />
-          )}
+
         </div>
       </div>
     );

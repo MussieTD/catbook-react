@@ -16,6 +16,7 @@ const User = require("./models/user");
 const Message = require("./models/message");
 
 const Statement = require("./models/statement.js");
+const Solution = require("./models/solution.js");
 
 // import authentication library
 const auth = require("./auth");
@@ -57,6 +58,46 @@ router.post("/comment", auth.ensureLoggedIn, (req, res) => {
   newComment.save().then((comment) => res.send(comment));
 });
 
+router.get("/solution", (req, res) => {
+  Solution.find({ parent: req.query.parent }).then((solutions) => {
+    res.send(solutions);
+  });
+});
+
+router.post("/solution", auth.ensureLoggedIn, (req, res) => {
+  const newSolution = new Solution({
+    creator_id: req.user._id,
+    creator_name: req.user.name,
+    parent: req.body.parent,
+    content: req.body.content,
+  });
+
+  newSolution.save().then((solution) => res.send(solution));
+});
+
+// router.get("/votes", (req, res) => {
+//   Statement.find({ _id: req.query.id }).then((statement) => {
+//     let votes = {support: statement.support, oppose: statement.oppose}
+//     res.send(votes);
+//   });
+// });
+
+router.post("/vote", auth.ensureLoggedIn, (req, res) => {
+  const myValue = req.body.value;
+  console.log("voting on: ", req.body.schema)
+
+  eval(req.body.schema).findOneAndUpdate({ _id : req.body.statement_id},
+    { $inc : { [myValue] :  req.body.change },
+      },
+    { new : true })
+  .then((resp) => {
+    console.log("response from update: " + resp);
+    res.status(200).send({});
+  }).catch((err) => {
+    console.log("error saving vote: " + err);
+  });
+});
+
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.post("/initsocket", auth.authenticateSocket);
@@ -90,7 +131,8 @@ router.post("/statement", auth.ensureLoggedIn, (req, res) => {
     content: req.body.content,
     topic_type: req.body.topic_type,
     content_type: req.body.content_type,
-
+    support: 1,
+    oppose: 1,
   });
 
   newStatement.save().then((statement) => res.send(statement));

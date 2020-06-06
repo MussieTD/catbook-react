@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SingleStory from "./SingleStory.js";
 import CommentsBlock from "./CommentsBlock.js";
-import { get } from "../../utilities";
+import { get , post } from "../../utilities";
 
 import "./Card.css";
 
@@ -23,6 +23,9 @@ class StatementCard extends Component {
     super(props);
     this.state = {
       comments: [],
+      solutions: [],
+      showSolution: false,
+      stance: "Neutral",
     };
   }
 
@@ -30,6 +33,12 @@ class StatementCard extends Component {
     get("/api/comment", { parent: this.props._id }).then((comments) => {
       this.setState({
         comments: comments,
+      });
+    });
+
+    get("/api/solution", { parent: this.props._id }).then((solutions) => {
+      this.setState({
+        solutions: solutions,
       });
     });
   }
@@ -42,6 +51,30 @@ class StatementCard extends Component {
     });
   };
 
+  addNewSolution = (solutionObj) => {
+    this.setState({
+      solutions: this.state.solutions.concat([solutionObj]),
+    });
+  };
+
+  handleSolutionViewChange = (event) => {
+    this.setState({showSolution: event.target.value === "solution"});
+  };
+
+  handleStanceChange = (event) => {
+    console.log("stance change: " + this.state.stance + " " + event.target.value)
+    if (event.target.value === "Neutral"){ // removing vote
+      const body = { schema: "Statement", statement_id: this.props._id, value: this.state.stance ,change: -1, user: this.props.userId};
+      post("/api/vote", body);
+      this.setState({stance: "Neutral" });
+    }
+    else {
+      this.setState({stance: event.target.value });
+      const body = { schema: "Statement", statement_id: this.props._id, value: event.target.value ,change: 1, user: this.props.userId};
+      post("/api/vote", body);
+    }
+  };
+
   render() {
     return (
       <div className="Card-container">
@@ -52,17 +85,66 @@ class StatementCard extends Component {
         <p className="Card-storyContent">{this.props.content}</p>
         <p className="Card-storyContent">{this.props.content_type}</p>
         <p className="Card-storyContent">{this.props.topic_type}</p>
+        <p className="Card-storyContent">{this.props.support}</p>
+        <p className="Card-storyContent">{this.props.oppose}</p>
       </div>
+      <hr/>
+      <form>
+          <div className="radio">
+            <label>
+              <input type="radio" value="comment"
+                            checked={!this.state.showSolution}
+                            onClick={this.handleSolutionViewChange} />
+              comment
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input type="radio" value="solution"
+                            checked={this.state.showSolution}
+                            onClick={this.handleSolutionViewChange} />
+              solution
+            </label>
+            </div>
+        </form>
+        <hr/>
+        <form>
+            <div className="radio">
+              <label>
+                <input type="radio" value="support"
+                              checked={this.state.stance === "support"}
+                              onChange={this.handleStanceChange} />
+                support
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input type="radio" value="oppose"
+                              checked={this.state.stance === "oppose"}
+                              onChange={this.handleStanceChange} />
+                oppose
+              </label>
+              </div>
+              { this.state.stance != "Neutral" && <div className="radio">
+                <label>
+                  <input type="radio" value="Neutral"
+                                checked={this.state.stance === "Neutral"}
+                                onChange={this.handleStanceChange} />
+                  neutralize vote:
+                </label>
+                </div> }
+          </form>
+      { !this.state.showSolution &&
         <CommentsBlock
-          story={this.props}
+          statement={this.props}
           comments={this.state.comments}
           addNewComment={this.addNewComment}
           userId={this.props.userId}
-        />
-        { this.props.topic_type != "improvement" && <SolutionBlock
-          story={this.props}
-          comments={this.state.comments}
-          addNewComment={this.addNewComment}
+        /> }
+        { this.state.showSolution && this.props.content_type != "improvement" && <SolutionBlock
+          statement={this.props}
+          solutions={this.state.solutions}
+          addNewSolution={this.addNewSolution}
           userId={this.props.userId}
         />}
       </div>

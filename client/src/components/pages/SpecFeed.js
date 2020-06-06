@@ -6,7 +6,7 @@ import { get } from "../../utilities";
 
 import { Link } from "@reach/router";
 
-import { NewStatement } from "../modules/NewStatementInput.js"
+import { NewStatement }  from "../modules/NewStatementInput.js"
 import StatementCard from "../modules/StatementCard.js";
 
 class SpecFeed extends Component {
@@ -38,7 +38,7 @@ class SpecFeed extends Component {
   };
 
   render() {
-    console.log("rendering specfeed");
+    console.log("rendering specfeed: " + this.props.userId);
     let storiesList = null;
     const hasStories = this.state.statements.length !== 0;
     if (hasStories) {
@@ -52,6 +52,8 @@ class SpecFeed extends Component {
           userId={this.props.userId}
           content_type={storyObj.content_type}
           topic_type={storyObj.topic_type}
+          support={storyObj.support}
+          oppose={storyObj.oppose}
         />
       ));
     } else {

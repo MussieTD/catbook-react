@@ -7,7 +7,10 @@ const StatementSchema = new mongoose.Schema({
   content: String,
   content_type: String,
   topic_type: String,
-
+  support: {type: Number, min: 0},
+  oppose: {type: Number, min: 0},
+  supporters: [String],
+  opposers: [String]
 });
 
 // compile model from schema
