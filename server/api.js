@@ -84,11 +84,27 @@ router.post("/solution", auth.ensureLoggedIn, (req, res) => {
 
 router.post("/vote", auth.ensureLoggedIn, (req, res) => {
   const myValue = req.body.value;
-  console.log("voting on: ", req.body.schema)
+  const user = req.body.userId;
+  console.log("voting on: ", req.body.schema + " " + myValue + " " + user)
 
   eval(req.body.schema).findOneAndUpdate({ _id : req.body.statement_id},
-    { $inc : { [myValue] :  req.body.change },
-      },
+    { $addToSet : { [myValue] :  [user] }},
+    { new : true })
+  .then((resp) => {
+    console.log("response from update: " + resp);
+    res.status(200).send({});
+  }).catch((err) => {
+    console.log("error saving vote: " + err);
+  });
+});
+
+router.post("/unvote", auth.ensureLoggedIn, (req, res) => {
+  const myValue = req.body.value;
+  const user = req.body.userId;
+  console.log("unvoting on: ", req.body.schema + " " + myValue + " " + user)
+
+  eval(req.body.schema).findOneAndUpdate({ _id : req.body.statement_id},
+    { $pull : { [myValue] :  user }},
     { new : true })
   .then((resp) => {
     console.log("response from update: " + resp);
@@ -131,8 +147,6 @@ router.post("/statement", auth.ensureLoggedIn, (req, res) => {
     content: req.body.content,
     topic_type: req.body.topic_type,
     content_type: req.body.content_type,
-    support: 1,
-    oppose: 1,
   });
 
   newStatement.save().then((statement) => res.send(statement));

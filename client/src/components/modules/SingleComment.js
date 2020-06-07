@@ -20,22 +20,15 @@ class SingleComment extends Component {
   }
 
   handleStanceChange = (event) => {
-    console.log("stance change: " + this.state.stance + " " + event.target.value)
     if (event.target.value === "Neutral"){ // removing vote
-      const body = { schema: "Comment", statement_id: this.props._id, value: this.state.stance ,change: -1};
-      post("/api/vote", body).then((vote) => {});
+      const body = { schema: "Comment", statement_id: this.props._id, value: this.state.stance , userId: this.props.userId};
+      post("/api/unvote", body);
       this.setState({stance: "Neutral" });
     }
     else {
       this.setState({stance: event.target.value });
-      const body = { schema: "Comment", statement_id: this.props._id, value: event.target.value ,change: 1};
-      console.log("sc ln 72");
-
-      post("/api/vote", body).then((comment) => {
-        console.log("sc ln 73");
-        // display this comment on the screen
-        // this.props.addNewSolution(comment);
-      });
+      const body = { schema: "Comment", statement_id: this.props._id, value: event.target.value , userId: this.props.userId};
+      post("/api/vote", body);
     }
   };
 
@@ -47,7 +40,6 @@ class SingleComment extends Component {
         </Link>
         <span>{" | " + this.props.content}</span>
         { this.props.userId &&
-
          (<form>
              <div className="radio">
                <label>
@@ -74,7 +66,6 @@ class SingleComment extends Component {
                  </label>
                  </div> }
            </form>)
-
        }
       </div>
 

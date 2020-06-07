@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import SingleComment from "./SingleComment.js";
+import SingleSolution from "./SingleSolution.js";
 // import { NewComment, NewSolution } from "./NewPostInput.js";
 import { NewComment, NewSolution } from "./NewFeedBackInput.js";
 import { Link } from "@reach/router";
+
 
 /**
  * @typedef ContentObject
@@ -35,12 +36,7 @@ class SolutionBlock extends Component {
     else {
       this.setState({stance: event.target.value });
       const body = { schema: "Solution" , statement_id: this.props._id, value: event.target.value ,change: 1};
-      console.log("sc ln 72");
-
       post("/api/vote", body).then((comment) => {
-        console.log("sc ln 73");
-        // display this comment on the screen
-        // this.props.addNewSolution(comment);
       });
     }
   };
@@ -53,16 +49,14 @@ class SolutionBlock extends Component {
           <NewSolution statementId={this.props.statement._id} addNewSolution={this.props.addNewSolution} />
         )}
           {this.props.solutions.map((solution) => (
-            <div className="Card-commentBody">
-              <Link to={`/profile/${solution.creator_id}`} className="u-link u-bold">
-                {solution.creator_name}
-              </Link>
-              <span>{" | " + solution.content}</span>
-            </div>
-
-
-
-
+            <SingleSolution
+              key={`SingleComment_${solution._id}`}
+              _id={solution._id}
+              creator_name={solution.creator_name}
+              creator_id={solution.creator_id}
+              content={solution.content}
+              userId = {this.props.userId}
+            />
           ))}
         </div>
       </div>

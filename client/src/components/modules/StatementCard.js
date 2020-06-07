@@ -64,13 +64,13 @@ class StatementCard extends Component {
   handleStanceChange = (event) => {
     console.log("stance change: " + this.state.stance + " " + event.target.value)
     if (event.target.value === "Neutral"){ // removing vote
-      const body = { schema: "Statement", statement_id: this.props._id, value: this.state.stance ,change: -1, user: this.props.userId};
-      post("/api/vote", body);
+      const body = { schema: "Statement", statement_id: this.props._id, value: this.state.stance , userId: this.props.userId};
+      post("/api/unvote", body);
       this.setState({stance: "Neutral" });
     }
     else {
       this.setState({stance: event.target.value });
-      const body = { schema: "Statement", statement_id: this.props._id, value: event.target.value ,change: 1, user: this.props.userId};
+      const body = { schema: "Statement", statement_id: this.props._id, value: event.target.value , userId: this.props.userId};
       post("/api/vote", body);
     }
   };
@@ -85,8 +85,8 @@ class StatementCard extends Component {
         <p className="Card-storyContent">{this.props.content}</p>
         <p className="Card-storyContent">{this.props.content_type}</p>
         <p className="Card-storyContent">{this.props.topic_type}</p>
-        <p className="Card-storyContent">{this.props.support}</p>
-        <p className="Card-storyContent">{this.props.oppose}</p>
+        <p className="Card-storyContent">{(this.props.support).length}</p>
+        <p className="Card-storyContent">{(this.props.oppose).length}</p>
       </div>
       <hr/>
       <form>
