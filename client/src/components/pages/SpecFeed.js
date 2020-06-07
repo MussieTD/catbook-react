@@ -61,7 +61,7 @@ class SpecFeed extends Component {
     }
     return (
       <>
-        <NewStatement addNewStatement={this.addNewStatement} topic_type={this.props.topic_type}/>
+        {this.props.userId && <NewStatement addNewStatement={this.addNewStatement} topic_type={this.props.topic_type}/>}
         {storiesList}
       </>
     );

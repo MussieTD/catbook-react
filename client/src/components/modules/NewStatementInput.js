@@ -67,14 +67,6 @@ handleRadioChange = (event) => {
             </div>
             <div className="radio">
               <label>
-                <input type="radio" value="solution"
-                              checked={this.state.contentType === 'solution'}
-                              onChange={this.handleRadioChange} />
-                Solution
-              </label>
-            </div>
-            <div className="radio">
-              <label>
                 <input type="radio" value="improvement"
                               checked={this.state.contentType === 'improvement'}
                               onChange={this.handleRadioChange} />

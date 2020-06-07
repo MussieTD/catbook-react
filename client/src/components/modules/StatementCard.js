@@ -3,7 +3,7 @@ import SingleStory from "./SingleStory.js";
 import CommentsBlock from "./CommentsBlock.js";
 import { get , post } from "../../utilities";
 
-import "./Card.css";
+import "./StatementCard.css";
 
 
 import { Link } from "@reach/router";
@@ -78,62 +78,72 @@ class StatementCard extends Component {
   render() {
     return (
       <div className="Card-container">
-      <div className="Card-story">
-        <Link to={`/profile/${this.props.creator_id}`} className="u-link u-bold">
-          {this.props.creator_name}
-        </Link>
-        <p className="Card-storyContent">{this.props.content}</p>
-        <p className="Card-storyContent">{this.props.content_type}</p>
-        <p className="Card-storyContent">{this.props.topic_type}</p>
-        <p className="Card-storyContent">{(this.props.support).length}</p>
-        <p className="Card-storyContent">{(this.props.oppose).length}</p>
-      </div>
+        <div className="Card-info">
+          <Link to={`/profile/${this.props.creator_id}`} className="u-link u-bold">
+            {this.props.creator_name}
+          </Link>
+          <div className="Card-topicType"> {this.props.topic_type}</div>
+          <div className="Card-contentType"> {this.props.content_type} </div>
+        </div>
+        <div className="Card-storyContent">{this.props.content}</div>
+        <div className="Stance">
+          <div className="Stance-show">
+            <div> Support: {(this.props.support).length} </div>
+            <div> Oppose: {(this.props.oppose).length} </div>
+          </div>
+
+          {this.props.userId && <form className="radios">
+                <label>
+                support:
+                  <input type="radio" value="support"
+                                checked={this.state.stance === "support"}
+                                onChange={this.handleStanceChange} />
+
+                </label>
+                <label>
+                oppose:
+                  <input type="radio" value="oppose"
+                                checked={this.state.stance === "oppose"}
+                                onChange={this.handleStanceChange} />
+
+                </label>
+                { this.state.stance != "Neutral" &&
+                  <label>
+                  neutralize vote:
+                    <input type="radio" value="Neutral"
+                                  checked={this.state.stance === "Neutral"}
+                                  onChange={this.handleStanceChange} />
+
+                  </label> }
+            </form> }
+        </div>
+
+
       <hr/>
-      <form>
-          <div className="radio">
+
+      <form className="radios">
+            <label>
+            Show: 
+            </label>
             <label>
               <input type="radio" value="comment"
                             checked={!this.state.showSolution}
                             onClick={this.handleSolutionViewChange} />
               comment
             </label>
-          </div>
-          <div className="radio">
+
+
             <label>
               <input type="radio" value="solution"
                             checked={this.state.showSolution}
                             onClick={this.handleSolutionViewChange} />
               solution
             </label>
-            </div>
+
         </form>
+
         <hr/>
-        <form>
-            <div className="radio">
-              <label>
-                <input type="radio" value="support"
-                              checked={this.state.stance === "support"}
-                              onChange={this.handleStanceChange} />
-                support
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input type="radio" value="oppose"
-                              checked={this.state.stance === "oppose"}
-                              onChange={this.handleStanceChange} />
-                oppose
-              </label>
-              </div>
-              { this.state.stance != "Neutral" && <div className="radio">
-                <label>
-                  <input type="radio" value="Neutral"
-                                checked={this.state.stance === "Neutral"}
-                                onChange={this.handleStanceChange} />
-                  neutralize vote:
-                </label>
-                </div> }
-          </form>
+
       { !this.state.showSolution &&
         <CommentsBlock
           statement={this.props}
@@ -147,6 +157,7 @@ class StatementCard extends Component {
           addNewSolution={this.addNewSolution}
           userId={this.props.userId}
         />}
+
       </div>
     );
   }
