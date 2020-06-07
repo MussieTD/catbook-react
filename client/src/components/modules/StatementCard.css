@@ -1,3 +1,42 @@
+.Topc-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.Topic-container {
+  /* We first create a flex layout context */
+  display: flex;
+
+  /* Then we define the flow direction
+     and if we allow the items to wrap
+   * Remember this is the same as:
+   * flex-direction: row;
+   * flex-wrap: wrap;
+   */
+  flex-flow: column wrap;
+
+  /* Then we define how is distributed the remaining space */
+  justify-content: space-around;
+
+  padding: 10;
+  margin: 0;
+  list-style: none;
+}
+
+.Topic-item {
+  padding: 5px;
+  height: 150px;
+  margin-top: 10px;
+  line-height: 150px;
+  font-weight: bold;
+  font-size: 3em;
+  text-align: center;
+  border: var(--darkgrey) 1px solid;
+  border-radius: var(--xs);
+  border-width: thick;
+}
+
 .Card-container {
   border: var(--darkgrey) 1px solid;
   border-radius: var(--xs);

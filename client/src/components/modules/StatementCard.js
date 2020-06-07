@@ -25,11 +25,15 @@ class StatementCard extends Component {
       comments: [],
       solutions: [],
       showSolution: false,
-      stance: "Neutral",
+      stance: this.getVote(),
+
     };
+
   }
 
   componentDidMount() {
+
+
     get("/api/comment", { parent: this.props._id }).then((comments) => {
       this.setState({
         comments: comments,
@@ -43,6 +47,15 @@ class StatementCard extends Component {
     });
   }
 
+
+  getVote = () => {
+    if (this.props.support.includes(this.props.userId)){
+      this.setState({stance : "support"});
+    }
+    else if (this.props.oppose.includes(this.props.userId)){
+      this.setState({stance : "oppose"});
+    }
+  }
   // this gets called when the user pushes "Submit", so their
   // post gets added to the screen right away
   addNewComment = (commentObj) => {
@@ -72,8 +85,10 @@ class StatementCard extends Component {
       this.setState({stance: event.target.value });
       const body = { schema: "Statement", statement_id: this.props._id, value: event.target.value , userId: this.props.userId};
       post("/api/vote", body);
+
     }
   };
+
 
   render() {
     return (
@@ -88,28 +103,28 @@ class StatementCard extends Component {
         <div className="Card-storyContent">{this.props.content}</div>
         <div className="Stance">
           <div className="Stance-show">
-            <div> Support: {(this.props.support).length} </div>
-            <div> Oppose: {(this.props.oppose).length} </div>
+            <div> Supporters: {(this.props.support).length + (this.state.stance == "support" && !this.props.support.includes(this.props.userId) ? 1 : 0)} </div>
+            <div> Opposers: {(this.props.oppose).length + (this.state.stance == "oppose" && !this.props.oppose.includes(this.props.userId) ? 1 : 0) } </div>
           </div>
 
           {this.props.userId && <form className="radios">
-                <label>
-                support:
+                {this.state.stance === "Neutral" && <label>
+                Support:
                   <input type="radio" value="support"
                                 checked={this.state.stance === "support"}
                                 onChange={this.handleStanceChange} />
 
-                </label>
-                <label>
-                oppose:
+                </label>}
+                {this.state.stance === "Neutral" && <label>
+                Oppose:
                   <input type="radio" value="oppose"
                                 checked={this.state.stance === "oppose"}
                                 onChange={this.handleStanceChange} />
 
-                </label>
+                </label>}
                 { this.state.stance != "Neutral" &&
                   <label>
-                  neutralize vote:
+                  Neutralize vote:
                     <input type="radio" value="Neutral"
                                   checked={this.state.stance === "Neutral"}
                                   onChange={this.handleStanceChange} />
@@ -123,7 +138,7 @@ class StatementCard extends Component {
 
       <form className="radios">
             <label>
-            Show: 
+            Show:
             </label>
             <label>
               <input type="radio" value="comment"

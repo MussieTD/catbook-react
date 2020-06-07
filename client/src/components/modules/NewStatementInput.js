@@ -34,7 +34,6 @@ class NewStatementInput extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.onSubmit && this.props.onSubmit(this.state.value, this.state.contentType, this.props.topicType);
-    console.log("mid sibmission");
     this.setState({
       value: "",
       contentType: "Problem",
@@ -42,7 +41,6 @@ class NewStatementInput extends Component {
   };
 
 handleRadioChange = (event) => {
-  console.log("event: ", event.target.value)
   this.setState({contentType: event.target.value});
 };
 
@@ -96,11 +94,9 @@ handleRadioChange = (event) => {
 class NewStatement extends Component {
   addStatement = (value, contentType) => {
     const body = { content: value , content_type : contentType, topic_type: this.props.topic_type};
-    console.log("passing as body: " + body.topic_type);
     post("/api/statement", body)
     .then((story) => {
       // display this story on the screen
-      console.log("statement posted: " + story)
       this.props.addNewStatement(story);
     })
     .catch((error) => {

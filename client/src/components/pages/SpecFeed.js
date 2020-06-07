@@ -30,15 +30,14 @@ class SpecFeed extends Component {
     });
   }
 
-  addNewStatement = (statement,statement_type) => {
-    // Convert to Statement type
-    // this.setState({
-    //   statements: [(statement,statement_type)].concat(this.state.stories),
-    // });
+
+  addNewStatement = (statement) => {
+    this.setState({
+      statements: [statement].concat(this.state.statements),
+    });
   };
 
   render() {
-    console.log("rendering specfeed: " + this.props.userId);
     let storiesList = null;
     const hasStories = this.state.statements.length !== 0;
     if (hasStories) {

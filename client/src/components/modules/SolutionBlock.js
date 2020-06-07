@@ -27,7 +27,6 @@ class SolutionBlock extends Component {
   }
 
   handleStanceChange = (event) => {
-    console.log("stance change: " + this.state.stance + " " + event.target.value)
     if (event.target.value === "Neutral"){ // removing vote
       const body = { schema: "Solution" , statement_id: this.props._id, value: this.state.stance ,change: -1};
       post("/api/vote", body).then((vote) => {});

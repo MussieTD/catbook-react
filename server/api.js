@@ -75,23 +75,15 @@ router.post("/solution", auth.ensureLoggedIn, (req, res) => {
   newSolution.save().then((solution) => res.send(solution));
 });
 
-// router.get("/votes", (req, res) => {
-//   Statement.find({ _id: req.query.id }).then((statement) => {
-//     let votes = {support: statement.support, oppose: statement.oppose}
-//     res.send(votes);
-//   });
-// });
-
 router.post("/vote", auth.ensureLoggedIn, (req, res) => {
   const myValue = req.body.value;
   const user = req.body.userId;
-  console.log("voting on: ", req.body.schema + " " + myValue + " " + user)
 
   eval(req.body.schema).findOneAndUpdate({ _id : req.body.statement_id},
     { $addToSet : { [myValue] :  [user] }},
     { new : true })
   .then((resp) => {
-    console.log("response from update: " + resp);
+    // console.log("response from update: " + resp);
     res.status(200).send({});
   }).catch((err) => {
     console.log("error saving vote: " + err);
@@ -101,7 +93,6 @@ router.post("/vote", auth.ensureLoggedIn, (req, res) => {
 router.post("/unvote", auth.ensureLoggedIn, (req, res) => {
   const myValue = req.body.value;
   const user = req.body.userId;
-  console.log("unvoting on: ", req.body.schema + " " + myValue + " " + user)
 
   eval(req.body.schema).findOneAndUpdate({ _id : req.body.statement_id},
     { $pull : { [myValue] :  user }},
@@ -133,14 +124,12 @@ router.get("/user", (req, res) => {
 });
 
 router.get("/statement", (req, res) => {
-  console.log("getting statements on: " + req.query.topic_type);
   Statement.find({ topic_type : req.query.topic_type }).then((statements) => {
     res.send(statements);
   });
 });
 
 router.post("/statement", auth.ensureLoggedIn, (req, res) => {
-  console.log("posting statement: "  + req.body.topic_type);
   const newStatement = new Statement({
     creator_id: req.user._id,
     creator_name: req.user.name,
