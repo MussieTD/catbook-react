@@ -50,10 +50,13 @@ class StatementCard extends Component {
 
   getVote = () => {
     if (this.props.support.includes(this.props.userId)){
-      this.setState({stance : "support"});
+      return "support";
     }
     else if (this.props.oppose.includes(this.props.userId)){
-      this.setState({stance : "oppose"});
+      return "oppose"
+    }
+    else {
+      return "Neutral"
     }
   }
   // this gets called when the user pushes "Submit", so their
@@ -75,7 +78,6 @@ class StatementCard extends Component {
   };
 
   handleStanceChange = (event) => {
-    console.log("stance change: " + this.state.stance + " " + event.target.value)
     if (event.target.value === "Neutral"){ // removing vote
       const body = { schema: "Statement", statement_id: this.props._id, value: this.state.stance , userId: this.props.userId};
       post("/api/unvote", body);
@@ -136,7 +138,7 @@ class StatementCard extends Component {
 
       <hr/>
 
-      <form className="radios">
+      {this.props.content_type != "improvement" && <form className="radios">
             <label>
             Show:
             </label>
@@ -155,9 +157,7 @@ class StatementCard extends Component {
               solution
             </label>
 
-        </form>
-
-        <hr/>
+        </form>}
 
       { !this.state.showSolution &&
         <CommentsBlock
